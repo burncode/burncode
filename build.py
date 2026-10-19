@@ -124,7 +124,7 @@ def load_theme(name, overrides=None):
         for key,value in settings.items():
             if key in ('icon_size','chip_font_size','chip_height','row_height','stat_font_size'):
                 if type(value) is not int or not 6<=value<=150:raise ConfigError(f'{name}: invalid {component}.{key}')
-            elif key in ('chip_border','tag_border','empty_color','active_color','divider_color','stat_border','stat_background'):
+            elif key in ('chip_border','empty_color','active_color','divider_color','stat_border','stat_background'):
                 if not isinstance(value,str) or not HEX.fullmatch(value):raise ConfigError(f'{name}: invalid {component}.{key}')
             elif key=='studio_scale':
                 if not isinstance(value,(int,float)) or isinstance(value,bool) or not 0.75<=value<=1.0:raise ConfigError(f'{name}: invalid studio_scale')
@@ -167,11 +167,9 @@ def validate(config, config_path):
         check_text(p.get(key),f'profile.{key}',limit)
     if not re.fullmatch(r'[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?',p['username']):
         raise ConfigError('profile.username must be a valid GitHub username')
-    p['tags']=check_list(p.get('tags',[]),'profile.tags',4,40)
-    if not isinstance(p.get('system'),dict):raise ConfigError('profile.system must be an object')
-    for key,val in p['system'].items():
-        check_text(key,'profile.system key',25)
-        check_text(val,f'profile.system.{key}',80)
+    for retired in ('tags','system'):
+        if retired in p:
+            raise ConfigError(f'profile.{retired} has been removed; use about.highlights or device instead')
     nav=cfg.get('header_nav',['code','build','explore'])
     cfg['header_nav']=check_list(nav,'header_nav',6,24)
     # New companion configuration; retain legacy cat.motion/duration compatibility.

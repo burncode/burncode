@@ -28,7 +28,8 @@ class V112Tests(unittest.TestCase):
     def setUpClass(cls):cls.cfg=build.validate(build.read_json(ROOT/'config.json'),ROOT/'config.json')
     def test_hero_ribbon(self):
         svg=build.render(self.cfg,'mono')
-        self.assertIn('MODE: indie dev',svg)
+        self.assertNotIn('MODE: indie dev',svg)
+        self.assertIn(self.cfg['profile']['tagline'],svg)
         self.assertNotIn('SYSTEM / PROFILE',svg)
         self.assertIn('Pixel', 'Pixel')
     def test_github_empty_languages_placeholder(self):

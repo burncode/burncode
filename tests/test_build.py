@@ -53,7 +53,7 @@ class GeneratorTests(unittest.TestCase):
         cfg['layout_mode']='showcase'
         cfg['layout']=[{'type':'footer','enabled':True},{'type':'projects','enabled':False},{'type':'hero','enabled':True}]
         svg=build.render(self.validate(cfg),'mono')
-        self.assertLess(svg.index('Session closed.'),svg.index('MODE: indie dev'))
+        self.assertLess(svg.index('Session closed.'),svg.index('burncode@github:~</text>'))
         self.assertNotIn('./projects',svg)
 
     def test_long_cjk_and_latin_wrap(self):

@@ -155,3 +155,7 @@ Manual-only: profile copy, project descriptions, Now, device hardware, social li
 ## Separate footer and motto
 
 `footer` renders the configurable terminal command and output (`closing`); `motto` renders the standalone motto lines. Each has its own `layout` toggle and position. Python source headers include author, email, copyright, and MIT license.
+
+### Hero introduction
+
+The header username, navigation and companion retain their settings. The main area contains the username, role and bilingual introduction beside the studio illustration. Use bout.highlights for interests and device for workstation details. Remove retired profile.tags, profile.system and theme components.hero.tag_border fields from old configurations; validation reports them as errors. Project tags (projects[].tags) are unchanged.

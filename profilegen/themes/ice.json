@@ -45,7 +45,6 @@
       "active_color": "#288db6"
     },
     "hero": {
-      "tag_border": "#d5e2eb",
       "variant": "compact",
       "studio_scale": 0.96
     }

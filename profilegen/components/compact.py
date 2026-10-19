@@ -12,7 +12,7 @@ from ..icons.headings import title as section_title
 W = 900
 
 def hero(canvas, cfg, y, options):
-    c=canvas.c; p=cfg['profile']; h=370
+    c=canvas.c; p=cfg['profile']; h=330
     canvas.rect(1,y,W-2,h,stroke=c['border'])
     canvas.line(1,y+44,W-1,y+44)
     canvas.text(17,y+29,'▶',14,c['accent'])
@@ -26,26 +26,14 @@ def hero(canvas, cfg, y, options):
     while width(p['username'],title_size)>480 and title_size>30:title_size-=2
     canvas.text(27,y+126,p['username'],title_size,bold=True,max_width=480)
     canvas.rect(min(474,34+width(p['username'],title_size)),y+113,22,8,c['accent'],radius=0)
-    canvas.text(29,y+160,'// '+p['role'],18,c['accent'],max_width=470)
-    canvas.line(29,y+176,29,y+226,c['accent'])
-    canvas.text(43,y+195,p['tagline'],15,max_width=465)
-    canvas.text(43,y+226,p['tagline_zh'],13,c['muted'],max_width=465)
-    for i,tag in enumerate(p['tags'][:4]):
-        x=27+(i%2)*222; yy=y+251+(i//2)*32
-        canvas.rect(x,yy,210,27,stroke=c['border'],radius=2)
-        canvas.rect(x+9,yy+10,7,7,(c['accent'],'#3998e5',c['muted'],'#a987df')[i],radius=3)
-        canvas.text(x+24,yy+18,tag,12,max_width=177)
-    # System occupies the lower-left strip, studio occupies right half.
-    canvas.rect(27,y+318,447,44,stroke=c['border'],radius=2)
-    pairs=list(p['system'].items())
-    for i,(key,val) in enumerate(pairs[:4]):
-        x=38+(i%2)*217; yy=y+334+(i//2)*19
-        canvas.text(x,yy,key,10,c['accent'],max_width=58)
-        canvas.text(x+62,yy,val,11,max_width=142)
+    canvas.text(29,y+174,'// '+p['role'],18,c['accent'],max_width=470)
+    canvas.line(29,y+197,29,y+259,c['accent'])
+    canvas.text(43,y+220,p['tagline'],15,max_width=465)
+    canvas.text(43,y+252,p['tagline_zh'],13,c['muted'],max_width=465)
     scene=options.get('scene') or cfg.get('studio',{}).get('scene') or canvas.theme.get('studio',{}).get('scene','daylight')
     asset=options.get('studio_asset') or canvas.theme.get('studio',{}).get('asset')
-    if asset:studio.render_asset(canvas,510,y+65,370,278,asset)
-    else:studio.render(canvas,510,y+65,370,278,scene)
+    if asset:studio.render_asset(canvas,510,y+65,370,243,asset)
+    else:studio.render(canvas,510,y+65,370,243,scene)
     return h
 
 def project_list(canvas,cfg,y,options):

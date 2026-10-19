@@ -4,12 +4,6 @@
     "role": "independent developer",
     "tagline": "Making useful things, quietly.",
     "tagline_zh": "独立开发者 · 开源爱好者 · 创造实用而有趣的软件。",
-    "tags": [
-      "developer tools",
-      "AI workflows",
-      "creative coding",
-      "open source"
-    ],
     "links": [
       {
         "label": "Repositories",
@@ -19,15 +13,7 @@
         "label": "GitHub",
         "url": "https://github.com/burncode"
       }
-    ],
-    "system": {
-      "MODE": "indie dev",
-      "TOOLS": "Python · Ruby · JS",
-      "EDITOR": "Emacs · VS Code",
-      "FOCUS": "Useful Tools",
-      "STACK": "FastAPI / Next.js",
-      "WORK": "Open Source"
-    }
+    ]
   },
   "projects": [
     {
@@ -131,7 +117,7 @@
       "type": "motto",
       "enabled": true
     },
-     {
+    {
       "type": "social",
       "enabled": false
     },

@@ -41,7 +41,7 @@ python -m unittest discover -s tests -q
 
 | 字段 | 用途 |
 |---|---|
-| `profile` | GitHub 用户名、身份、介绍、技术标签、终端系统字段、个人链接 |
+| `profile` | GitHub 用户名、身份、介绍、个人链接 |
 | `layout` | **所有可视组件**的顺序和开关（包括 Social） |
 | `social` | 社交按钮内容、URL、图标、显示模式 |
 | `projects` | 精选项目的名称、简介、标签、仓库与统计 |
@@ -327,3 +327,7 @@ python .\build.py --offline --preview
 `layout` 中 `footer` 显示终端提示符、命令及输出；`motto` 显示 `config.json` 的 `motto` 短句。二者互相独立，可分别设置 `enabled` 或调整顺序。
 
 Python 源文件顶部统一包含作者、联系邮箱、版权和 MIT 许可信息。
+
+### Hero 简介区域
+
+顶栏用户名、导航与小猫保持独立配置。主体显示用户名、身份、英文与中文简介，右侧显示场景插画。兴趣标签统一使用 bout.highlights；设备信息统一使用 device。profile.tags、profile.system 及主题 components.hero.tag_border 已移除，旧配置需删除这些字段，校验会明确报错。项目的 projects[].tags 不受影响。
