@@ -1,0 +1,59 @@
+{
+  "name": "ice",
+  "mode": "light",
+  "colors": {
+    "background": "#f7fbff",
+    "foreground": "#142638",
+    "muted": "#667f93",
+    "accent": "#288db6",
+    "border": "#d5e2eb",
+    "surface": "#e8f1f7"
+  },
+  "fonts": {
+    "body": "DejaVu Sans Mono, Consolas, monospace",
+    "heading": "DejaVu Sans Mono, Consolas, monospace"
+  },
+  "typography": {
+    "title_size": 64,
+    "body_size": 14,
+    "line_height": 20
+  },
+  "style": {
+    "border_width": 0.8,
+    "corner_radius": 3,
+    "pixel_density": 2
+  },
+  "studio": {
+    "scene": "rainy_loft"
+  },
+  "components": {
+    "projects": {
+      "icon_size": 42,
+      "icon_variant": "soft",
+      "chip_font_size": 9,
+      "chip_height": 17,
+      "chip_border": "#d5e2eb",
+      "stats_variant": "split",
+      "row_height": 86,
+      "stat_font_size": 10,
+      "stat_background": "#f7fbff",
+      "divider_color": "#e8f1f7"
+    },
+    "activity": {
+      "empty_color": "#e8f1f7",
+      "active_color": "#288db6"
+    },
+    "hero": {
+      "tag_border": "#d5e2eb",
+      "variant": "compact",
+      "studio_scale": 0.96
+    }
+  },
+  "icons": {
+    "projects": [
+      "cube",
+      "book",
+      "heritage"
+    ]
+  }
+}

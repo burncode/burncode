@@ -1,0 +1,59 @@
+{
+  "name": "matrix",
+  "mode": "dark",
+  "colors": {
+    "background": "#07100d",
+    "foreground": "#d5f4e5",
+    "muted": "#89aa9c",
+    "accent": "#4be88c",
+    "border": "#28463a",
+    "surface": "#10231a"
+  },
+  "fonts": {
+    "body": "Courier New, DejaVu Sans Mono, monospace",
+    "heading": "Courier New, DejaVu Sans Mono, monospace"
+  },
+  "typography": {
+    "title_size": 62,
+    "body_size": 14,
+    "line_height": 20
+  },
+  "style": {
+    "border_width": 0.85,
+    "corner_radius": 0,
+    "pixel_density": 3
+  },
+  "studio": {
+    "scene": "workshop"
+  },
+  "components": {
+    "projects": {
+      "icon_size": 42,
+      "icon_variant": "terminal",
+      "chip_font_size": 9,
+      "chip_height": 17,
+      "chip_border": "#424A55",
+      "stats_variant": "split",
+      "row_height": 86,
+      "stat_font_size": 10,
+      "stat_background": "#07100d",
+      "divider_color": "#10231a"
+    },
+    "activity": {
+      "empty_color": "#10231a",
+      "active_color": "#4be88c"
+    },
+    "hero": {
+      "tag_border": "#28463a",
+      "variant": "compact",
+      "studio_scale": 0.96
+    }
+  },
+  "icons": {
+    "projects": [
+      "cube",
+      "book",
+      "heritage"
+    ]
+  }
+}

@@ -1,0 +1,254 @@
+{
+  "profile": {
+    "username": "burncode",
+    "role": "independent developer",
+    "tagline": "Making useful things, quietly.",
+    "tagline_zh": "独立开发者 · 开源爱好者 · 创造实用而有趣的软件。",
+    "tags": [
+      "developer tools",
+      "AI workflows",
+      "creative coding",
+      "open source"
+    ],
+    "links": [
+      {
+        "label": "Repositories",
+        "url": "https://github.com/burncode?tab=repositories"
+      },
+      {
+        "label": "GitHub",
+        "url": "https://github.com/burncode"
+      }
+    ],
+    "system": {
+      "MODE": "indie dev",
+      "TOOLS": "Python · Ruby · JS",
+      "EDITOR": "Emacs · VS Code",
+      "FOCUS": "Useful Tools",
+      "STACK": "FastAPI / Next.js",
+      "WORK": "Open Source"
+    }
+  },
+  "projects": [
+    {
+      "name": "dsh-sketchup",
+      "description": "python使用xlrd和xlwt 读写考勤 excel表格.",
+      "tags": [
+        "python",
+        "Excel",
+        "Tools"
+      ],
+      "status": "IN DEVELOPMENT",
+      "url": "https://github.com/burncode/python-excel",
+      "icon": "terminal",
+      "icon_color": "blue"
+    },
+    {
+      "name": "yuedu-emacs",
+      "description": "A better reading experience inside Emacs.",
+      "tags": [
+        "Emacs Lisp",
+        "Reader"
+      ],
+      "status": "IN DEVELOPMENT",
+      "url": "",
+      "icon": "book",
+      "icon_color": "violet"
+    },
+    {
+      "name": "Heritage Builder",
+      "description": "Parametric Chinese architecture toolkit.",
+      "tags": [
+        "CAD",
+        "Parametric"
+      ],
+      "status": "IN DEVELOPMENT",
+      "url": "",
+      "icon": "heritage",
+      "icon_color": "coral"
+    }
+  ],
+  "now": [
+    "Building developer tools",
+    "Exploring AI workflows",
+    "Reading & learning"
+  ],
+  "motto": [
+    "以无限为有限.",
+    "以无法为有法."
+  ],
+  "themes": {
+    "light": "lavender",
+    "dark": "violet",
+    "generate": [
+      "mono",
+      "graphite",
+      "matrix",
+      "amber",
+      "violet",
+      "paper",
+      "ice",
+      "sage",
+      "lavender"
+    ]
+  },
+  "colors": {},
+  "studio_image": "",
+  "layout": [
+    {
+      "type": "hero",
+      "enabled": true
+    },
+    {
+      "type": "about",
+      "enabled": true
+    },
+    {
+      "type": "projects",
+      "enabled": true
+    },
+    {
+      "type": "languages",
+      "enabled": true
+    },
+    {
+      "type": "activity",
+      "enabled": true
+    },
+    {
+      "type": "recent_releases",
+      "enabled": true
+    },
+    {
+      "type": "blog",
+      "enabled": true
+    },
+    {
+      "type": "device",
+      "enabled": true
+    },
+    {
+      "type": "motto",
+      "enabled": true
+    },
+     {
+      "type": "social",
+      "enabled": true
+    },
+    {
+      "type": "footer",
+      "enabled": true
+    }
+  ],
+  "i18n": {
+    "locale": "zh-CN"
+  },
+  "social": [
+    {
+      "label": "GitHub",
+      "url": "https://github.com/burncode",
+      "icon": "github",
+      "display": "both"
+    },
+    {
+      "label": "Repositories",
+      "url": "https://github.com/burncode?tab=repositories",
+      "icon": "website",
+      "display": "both"
+    }
+  ],
+  "github": {
+    "cache_hours": 12,
+    "refresh": "manual"
+  },
+  "header_nav": [
+    "code",
+    "build",
+    "explore"
+  ],
+  "header_cat": true,
+  "layout_mode": "showcase",
+  "companion": {
+    "character": "orange_cat",
+    "animation": "story",
+    "duration": 24,
+    "sequence": [
+      "walk",
+      "idle",
+      "sleep",
+      "banner",
+      "walk"
+    ],
+    "banner": "Burncode_"
+  },
+  "widgets": {
+    "languages": {
+      "enabled": true,
+      "source": "github",
+      "items": [],
+      "mode": "selected",
+      "repositories": [],
+      "max_repositories": 10,
+      "cache_hours": 168
+    },
+    "github_stats": {
+      "enabled": true
+    },
+    "recent_releases": {
+      "enabled": false,
+      "repositories": [],
+      "max_repositories": 3,
+      "cache_hours": 24
+    },
+    "blog": {
+      "enabled": true,
+      "source": "atom",
+      "feed_url": "https://burncode.github.io/atom.xml",
+      "max_posts": 3,
+      "cache_hours": 12,
+      "posts": []
+    }
+  },
+  "theme_catalog": {
+    "mono": "L",
+    "graphite": "D",
+    "matrix": "D",
+    "amber": "D",
+    "violet": "D",
+    "paper": "L",
+    "ice": "L",
+    "sage": "L",
+    "lavender": "L"
+  },
+  "about": {
+    "lines": [
+      "独立开发者，喜欢创造实用而有趣的软件。",
+      "关注开发工具、AI 工作流与开源项目。"
+    ],
+    "highlights": [
+      "Open Source",
+      "Developer Tools",
+      "Creative Coding"
+    ]
+  },
+  "device": {
+    "OS": "Arch Linux (example)",
+    "Host": "Developer Workstation",
+    "Editor": "Emacs / VS Code",
+    "Shell": "PowerShell / Bash",
+    "logo": "arch",
+    "hostname": "workstation",
+    "command": "fastfetch --logo small",
+    "Device": "Desktop PC",
+    "RAM": "32 GB",
+    "Storage": "1 TB SSD",
+    "color_seed": "burncode",
+    "logo_animate": true
+  },
+  "closing": {
+    "prompt": "burncode@github:~$",
+    "command": "exit",
+    "output": "Session closed. Ideas still running.",
+    "animate": true
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "projects": "proyectos",
+  "modules": "PROYECTOS",
+  "activity": "actividad",
+  "now": "ahora",
+  "connect": "contacto",
+  "motto": "lema",
+  "development": "EN DESARROLLO",
+  "unavailable": "Sin datos verificados de actividad",
+  "stats": "estadísticas",
+  "selected_repos": "proyectos seleccionados",
+  "languages": "lenguajes",
+  "github_data": "DATOS DE GITHUB",
+  "manual_data": "DATOS MANUALES",
+  "no_data": "SIN DATOS",
+  "no_languages": "Sin datos de lenguajes",
+  "about": "Sobre mí",
+  "development_focus": "Enfoque de desarrollo",
+  "recent_releases": "Lanzamientos recientes",
+  "highlights": "Áreas de interés",
+  "blog": "Blog"
+}

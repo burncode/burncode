@@ -1,0 +1,59 @@
+{
+  "name": "paper",
+  "mode": "light",
+  "colors": {
+    "background": "#fffdf8",
+    "foreground": "#292924",
+    "muted": "#79786e",
+    "accent": "#cc7955",
+    "border": "#dedbd3",
+    "surface": "#f1eee7"
+  },
+  "fonts": {
+    "body": "DejaVu Sans Mono, Consolas, monospace",
+    "heading": "DejaVu Sans Mono, Consolas, monospace"
+  },
+  "typography": {
+    "title_size": 64,
+    "body_size": 14,
+    "line_height": 20
+  },
+  "style": {
+    "border_width": 0.8,
+    "corner_radius": 3,
+    "pixel_density": 2
+  },
+  "studio": {
+    "scene": "sunset"
+  },
+  "components": {
+    "projects": {
+      "icon_size": 42,
+      "icon_variant": "outline",
+      "chip_font_size": 9,
+      "chip_height": 17,
+      "chip_border": "#dedbd3",
+      "stats_variant": "split",
+      "row_height": 86,
+      "stat_font_size": 10,
+      "stat_background": "#fffdf8",
+      "divider_color": "#f1eee7"
+    },
+    "activity": {
+      "empty_color": "#f1eee7",
+      "active_color": "#cc7955"
+    },
+    "hero": {
+      "tag_border": "#dedbd3",
+      "variant": "editorial",
+      "studio_scale": 1.0
+    }
+  },
+  "icons": {
+    "projects": [
+      "cube",
+      "book",
+      "heritage"
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "projects": "projects",
+  "modules": "MODULES",
+  "activity": "activity",
+  "now": "now",
+  "connect": "connect",
+  "motto": "motto",
+  "development": "IN DEVELOPMENT",
+  "unavailable": "No verified GitHub activity data",
+  "stats": "stats",
+  "selected_repos": "selected projects",
+  "languages": "languages",
+  "github_data": "GITHUB DATA",
+  "manual_data": "MANUAL DATA",
+  "no_data": "NO DATA",
+  "no_languages": "No language data yet",
+  "about": "About me",
+  "development_focus": "Development Focus",
+  "recent_releases": "Recent Releases",
+  "highlights": "Highlights",
+  "blog": "Blog"
+}

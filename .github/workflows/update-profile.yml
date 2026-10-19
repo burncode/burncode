@@ -1,0 +1,50 @@
+name: Refresh GitHub profile
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Daily at 03:17 UTC. GitHub scheduled runs may be delayed.
+    - cron: '17 3 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: profile-readme-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout profile repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate configuration
+        run: python build.py --check --no-color
+      - name: Refresh enabled remote data and rebuild README
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python build.py --refresh-data --no-color
+      - name: Commit README, generated sections, and supported caches
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A -- README.md assets/sections/
+          for cache in github.json contributions.json account.json languages.json releases.json blog_feed.json; do
+            if [ -f ".cache/$cache" ]; then
+              git add -- ".cache/$cache"
+            fi
+          done
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: refresh profile README and data caches"
+            git push
+          fi

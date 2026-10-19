@@ -1,0 +1,59 @@
+{
+  "name": "sage",
+  "mode": "light",
+  "colors": {
+    "background": "#f7faf6",
+    "foreground": "#24362e",
+    "muted": "#6e8377",
+    "accent": "#438f72",
+    "border": "#d7e2d8",
+    "surface": "#e9f1e9"
+  },
+  "fonts": {
+    "body": "DejaVu Sans Mono, Consolas, monospace",
+    "heading": "DejaVu Sans Mono, Consolas, monospace"
+  },
+  "typography": {
+    "title_size": 64,
+    "body_size": 14,
+    "line_height": 20
+  },
+  "style": {
+    "border_width": 0.8,
+    "corner_radius": 3,
+    "pixel_density": 2
+  },
+  "studio": {
+    "scene": "workshop"
+  },
+  "components": {
+    "projects": {
+      "icon_size": 42,
+      "icon_variant": "retro",
+      "chip_font_size": 9,
+      "chip_height": 17,
+      "chip_border": "#d7e2d8",
+      "stats_variant": "split",
+      "row_height": 86,
+      "stat_font_size": 10,
+      "stat_background": "#f7faf6",
+      "divider_color": "#e9f1e9"
+    },
+    "activity": {
+      "empty_color": "#e9f1e9",
+      "active_color": "#438f72"
+    },
+    "hero": {
+      "tag_border": "#d7e2d8",
+      "variant": "editorial",
+      "studio_scale": 1.0
+    }
+  },
+  "icons": {
+    "projects": [
+      "cube",
+      "book",
+      "heritage"
+    ]
+  }
+}

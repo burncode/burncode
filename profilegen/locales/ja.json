@@ -1,0 +1,22 @@
+{
+  "projects": "プロジェクト",
+  "modules": "件",
+  "activity": "アクティビティ",
+  "now": "取り組み",
+  "connect": "連絡先",
+  "motto": "モットー",
+  "development": "開発中",
+  "unavailable": "GitHub の貢献データは未取得",
+  "stats": "統計",
+  "selected_repos": "選択したプロジェクト",
+  "languages": "言語",
+  "github_data": "GitHub データ",
+  "manual_data": "手動データ",
+  "no_data": "データなし",
+  "no_languages": "言語データなし",
+  "about": "自己紹介",
+  "development_focus": "開発の重点",
+  "recent_releases": "最近のリリース",
+  "highlights": "注目分野",
+  "blog": "ブログ"
+}

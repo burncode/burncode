@@ -1,0 +1,60 @@
+{
+  "name": "graphite",
+  "mode": "dark",
+  "colors": {
+    "background": "#0c1015",
+    "foreground": "#e6ebf2",
+    "muted": "#98a6b8",
+    "accent": "#72b8ff",
+    "border": "#34414e",
+    "surface": "#18212b"
+  },
+  "fonts": {
+    "body": "DejaVu Sans Mono, Consolas, monospace",
+    "heading": "DejaVu Sans Mono, Consolas, monospace"
+  },
+  "typography": {
+    "title_size": 64,
+    "body_size": 14,
+    "line_height": 20
+  },
+  "style": {
+    "border_width": 0.85,
+    "corner_radius": 3,
+    "pixel_density": 2
+  },
+  "studio": {
+    "scene": "night_city",
+    "asset": "studio-night"
+  },
+  "components": {
+    "projects": {
+      "icon_size": 42,
+      "icon_variant": "solid",
+      "chip_font_size": 9,
+      "chip_height": 17,
+      "chip_border": "#424A55",
+      "stats_variant": "split",
+      "row_height": 86,
+      "stat_font_size": 10,
+      "stat_background": "#0c1015",
+      "divider_color": "#18212b"
+    },
+    "activity": {
+      "empty_color": "#18212b",
+      "active_color": "#72b8ff"
+    },
+    "hero": {
+      "tag_border": "#34414e",
+      "variant": "compact",
+      "studio_scale": 0.96
+    }
+  },
+  "icons": {
+    "projects": [
+      "cube",
+      "book",
+      "heritage"
+    ]
+  }
+}

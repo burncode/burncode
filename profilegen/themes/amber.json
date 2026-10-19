@@ -1,0 +1,59 @@
+{
+  "name": "amber",
+  "mode": "dark",
+  "colors": {
+    "background": "#15100b",
+    "foreground": "#f6e8d0",
+    "muted": "#b7a28a",
+    "accent": "#ffbd55",
+    "border": "#59412c",
+    "surface": "#241b11"
+  },
+  "fonts": {
+    "body": "DejaVu Sans Mono, monospace",
+    "heading": "DejaVu Sans Mono, monospace"
+  },
+  "typography": {
+    "title_size": 64,
+    "body_size": 14,
+    "line_height": 20
+  },
+  "style": {
+    "border_width": 0.85,
+    "corner_radius": 0,
+    "pixel_density": 2
+  },
+  "studio": {
+    "scene": "sunset"
+  },
+  "components": {
+    "projects": {
+      "icon_size": 42,
+      "icon_variant": "retro",
+      "chip_font_size": 9,
+      "chip_height": 17,
+      "chip_border": "#424A55",
+      "stats_variant": "split",
+      "row_height": 86,
+      "stat_font_size": 10,
+      "stat_background": "#15100b",
+      "divider_color": "#241b11"
+    },
+    "activity": {
+      "empty_color": "#241b11",
+      "active_color": "#ffbd55"
+    },
+    "hero": {
+      "tag_border": "#59412c",
+      "variant": "classic",
+      "studio_scale": 1.0
+    }
+  },
+  "icons": {
+    "projects": [
+      "cube",
+      "book",
+      "heritage"
+    ]
+  }
+}

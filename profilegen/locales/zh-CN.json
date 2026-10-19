@@ -1,0 +1,22 @@
+{
+  "projects": "项目",
+  "modules": "个项目",
+  "activity": "动态",
+  "now": "正在做",
+  "connect": "联系我",
+  "motto": "格言",
+  "development": "开发中",
+  "unavailable": "暂无已验证的 GitHub 贡献数据",
+  "stats": "统计",
+  "selected_repos": "精选项目",
+  "languages": "编程语言",
+  "github_data": "GitHub 数据",
+  "manual_data": "手动数据",
+  "no_data": "暂无数据",
+  "no_languages": "暂无语言数据",
+  "about": "关于我",
+  "development_focus": "开发重点",
+  "recent_releases": "最近发布",
+  "highlights": "关注领域",
+  "blog": "博客"
+}

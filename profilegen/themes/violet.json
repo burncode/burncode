@@ -1,0 +1,59 @@
+{
+  "name": "violet",
+  "mode": "dark",
+  "colors": {
+    "background": "#130f1b",
+    "foreground": "#eee3f6",
+    "muted": "#b3a0c4",
+    "accent": "#d58bff",
+    "border": "#493656",
+    "surface": "#22182c"
+  },
+  "fonts": {
+    "body": "Consolas, DejaVu Sans Mono, monospace",
+    "heading": "Consolas, DejaVu Sans Mono, monospace"
+  },
+  "typography": {
+    "title_size": 64,
+    "body_size": 14,
+    "line_height": 20
+  },
+  "style": {
+    "border_width": 0.85,
+    "corner_radius": 3,
+    "pixel_density": 2
+  },
+  "studio": {
+    "scene": "night_city"
+  },
+  "components": {
+    "projects": {
+      "icon_size": 42,
+      "icon_variant": "soft",
+      "chip_font_size": 9,
+      "chip_height": 17,
+      "chip_border": "#424A55",
+      "stats_variant": "split",
+      "row_height": 86,
+      "stat_font_size": 10,
+      "stat_background": "#130f1b",
+      "divider_color": "#22182c"
+    },
+    "activity": {
+      "empty_color": "#22182c",
+      "active_color": "#d58bff"
+    },
+    "hero": {
+      "tag_border": "#493656",
+      "variant": "editorial",
+      "studio_scale": 1.0
+    }
+  },
+  "icons": {
+    "projects": [
+      "cube",
+      "book",
+      "heritage"
+    ]
+  }
+}

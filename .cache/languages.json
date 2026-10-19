@@ -1,0 +1,15 @@
+{
+  "burncode:selected:burncode/python-excel": {
+    "items": [
+      {
+        "name": "Python",
+        "value": 9111
+      }
+    ],
+    "repositories": 1,
+    "fetched_at": 1792391363.7232773,
+    "source": "github",
+    "mode": "selected",
+    "measure": "bytes"
+  }
+}
