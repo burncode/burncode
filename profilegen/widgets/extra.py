@@ -66,7 +66,7 @@ def blog(canvas,cfg,y,options):
     for i,post in enumerate(posts):
         yy=y+51+i*36
         title=post['title']
-        canvas.text(35,yy+22,title,12,c['muted'],max_width=990)
+        canvas.text(35,yy+22,title,12,c['muted'],max_width=990,family='reading')
         length=min(990,width(title,13.2))
         canvas.line(35,yy+26,35+length,yy+26,color=c['border'])
     return h

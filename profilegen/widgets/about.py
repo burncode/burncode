@@ -13,7 +13,7 @@ def render(canvas,cfg,y,options):
     h=62+len(lines)*25+(40 if highlights else 0)
     canvas.rect(1,y,1098,h,stroke=c['border'])
     section_title(canvas,'about',27,y+29,tr(cfg,'about'))
-    for i,line in enumerate(lines):canvas.text(35,y+57+i*25,'› '+line,13,c['muted'],max_width=1000)
+    for i,line in enumerate(lines):canvas.text(35,y+57+i*25,'› '+line,13,c['muted'],max_width=1000,family='reading')
     x=35;sy=y+60+len(lines)*25
     for i,label in enumerate(highlights):
         w=max(70,min(280,int(width(label,12)+30)))

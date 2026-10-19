@@ -29,8 +29,8 @@ def render(canvas,cfg,y,options):
     canvas.raw(f'<rect x="{cursor_x}" y="{y+116}" width="23" height="8" fill="{c["accent"]}"><animate attributeName="opacity" values="1;0.22;1" dur="2.3s" repeatCount="indefinite"/></rect>')
     canvas.text(31,y+160,'// '+p['role'],19,c['accent'],max_width=615)
     canvas.line(31,y+176,31,y+215,c['accent'])
-    canvas.text(44,y+193,p['tagline'],16,max_width=600)
-    canvas.text(44,y+225,p['tagline_zh'],13,c['muted'],max_width=600)
+    canvas.text(44,y+193,p['tagline'],16,max_width=600,family='reading')
+    canvas.text(44,y+225,p['tagline_zh'],13,c['muted'],max_width=600,family='reading')
     for i,tag in enumerate(p['tags'][:4]):
         x=30+i*155
         canvas.rect(x,y+237,147,25,stroke=style.get('tag_border',c['border']),radius=2)

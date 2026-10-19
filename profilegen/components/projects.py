@@ -38,7 +38,7 @@ def render(canvas,cfg,y,options):
         draw_icon(canvas,84,top+(row_height-42)/2,icon_name,accent,42,style.get('icon_variant','outline'))
         x=145
         canvas.text(x,top+25,p['name'],17,c['foreground'],True,max_width=570)
-        canvas.text(x,top+48,p['description'],13,c['muted'],max_width=575)
+        canvas.text(x,top+48,p['description'],13,c['muted'],max_width=575,family='reading')
         # language + Stars + Forks all appear on a single calm metadata line.
         meta_y=top+76
         language=p.get('language') or (p.get('tags') or [''])[0]
@@ -51,7 +51,7 @@ def render(canvas,cfg,y,options):
         # Full labels first, wrapping to a second line if necessary. Never ellipsize tags.
         status=tr(cfg,'development') if p['status']=='IN DEVELOPMENT' else p['status']
         canvas.rect(705,top+12,6,6,accent,radius=3)
-        canvas.text(717,top+20,status,11,c['muted'],max_width=305)
+        canvas.text(717,top+20,status,11,c['muted'],max_width=305,family='reading')
         tx=705; chip_y=top+34
         for j,tag in enumerate(p.get('tags',[])[:5]):
             # Account for Canvas showcase font scaling when measuring.

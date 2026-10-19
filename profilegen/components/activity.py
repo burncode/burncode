@@ -36,7 +36,7 @@ def render(canvas,cfg,y,options):
     nx=393 if stats_on else 577
     section_title(canvas,'now',nx,y+29,tr(cfg,'now'))
     for i,item in enumerate(cfg.get('now',[])[:4]):
-        canvas.text(nx+3,y+60+i*20,'› '+item,12,c['muted'],max_width=306 if stats_on else 460)
+        canvas.text(nx+3,y+60+i*20,'› '+item,12,c['muted'],max_width=306 if stats_on else 460,family='reading')
     if stats_on:
         section_title(canvas,'stats',759,y+29,tr(cfg,'stats'))
         account=cfg.get('_account') or {}

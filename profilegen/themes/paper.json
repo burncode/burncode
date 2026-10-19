@@ -10,6 +10,7 @@
     "surface": "#f1eee7"
   },
   "fonts": {
+    "reading": "Segoe UI, Noto Sans CJK SC, Microsoft YaHei, PingFang SC, sans-serif",
     "body": "DejaVu Sans Mono, Consolas, monospace",
     "heading": "DejaVu Sans Mono, Consolas, monospace"
   },

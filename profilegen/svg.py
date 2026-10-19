@@ -36,7 +36,7 @@ class Canvas:
         s = str(value)
         if max_width is not None:
             s = ellipsize(s, max_width, size)
-        font = escape(self.fonts[family], quote=True)
+        font = escape(self.fonts.get(family, self.fonts['body']), quote=True)
         anchor_attr = f' text-anchor="{anchor}"' if anchor else ''
         self.raw(f'<text x="{x}" y="{y}" font-family="{font}" font-size="{size}" fill="{escape(color or self.c["foreground"])}"'+(' font-weight="700"' if bold else '')+anchor_attr+f'>{escape(s)}</text>')
 
