@@ -448,7 +448,7 @@ def render_sections(cfg,theme_name):
     import re
     theme=load_theme(theme_name,cfg.get('colors',{}).get(theme_name,{}))
     canvas=Canvas(theme,width=1100);canvas.density='showcase'
-    y=0;sections=[]
+    y=0;sections=[];content_bounds={}
     for component in cfg['layout']:
         if not component.get('enabled',True):continue
         kind=component['type']
@@ -477,6 +477,7 @@ def render_sections(cfg,theme_name):
         # Merge the section gap into the final slice instead of producing
         # an extra transparent <img>, which GitHub gives its own line box.
         label, top, section_height, link = sections[-1]
+        content_bounds[label]=(top,section_height)
         sections[-1] = (label, top, section_height + 8, link)
         y += h + 8
 
@@ -517,7 +518,11 @@ def render_sections(cfg,theme_name):
             files[name]=(f'<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="{h}" viewBox="0 0 1100 {h}" aria-hidden="true"></svg>\n',None)
             continue
         header=f'<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="{h}" viewBox="0 {top} 1100 {h}" role="img" aria-label="{html.escape(name,quote=True)}">'
-        files[name]=(f'<!-- {MARKER} v12.9 sections -->\n'+header+inner+'</svg>\n',url)
+        # Keep the gap blank: the next component's top stroke otherwise bleeds
+        # into this viewport because all strips share the complete scene.
+        clip_top,clip_height=content_bounds.get(name,(top,h))
+        clip=(f'<defs><clipPath id="section-clip"><rect x="0" y="{clip_top}" width="1100" height="{clip_height+0.5}"/></clipPath></defs>')
+        files[name]=(f'<!-- {MARKER} v12.9 sections -->\n'+header+clip+'<g clip-path="url(#section-clip)">'+inner+'</g></svg>\n',url)
     return files
 
 
