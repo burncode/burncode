@@ -107,7 +107,7 @@ Download SVG files manually from https://tabler.io/icons, preferably 24×24 Outl
 
 ## Themes, locale, companion and image
 
-`themes.light` and `themes.dark` select active light/dark themes; both must be in `themes.generate`. `colors` overrides theme colors. `i18n.locale` selects `zh-CN` or `en-US`, with translation resources under `profilegen/locales/`. `header_nav` configures header navigation labels. `header_cat` enables the animated cat; `companion.character` is `classic_cat`, `tuxedo_cat`, or `orange_cat`, and `animation` is `wander`, `walk`, `idle`, `static`, or `story` (`duration` 4–60 seconds). `studio.scene` selects a scene; `studio_image` optionally points to a local PNG/JPG/WebP/GIF. `now` and `motto` contain short text lists. `layout_mode` accepts `showcase` or `github`, while the official linked-section output uses showcase coordinates.
+`themes.light` and `themes.dark` select active light/dark themes; both must be in `themes.generate`. `colors` overrides theme colors. `i18n.locale` selects `zh-CN` or `en-US`, with translation resources under `profilegen/locales/`. `header_nav` configures header navigation labels. `header_cat` enables the animated cat. `companion.character` selects one of six cats; `animation` selects a native action or `wander`, `static`, or `story` (`duration` 4–60 seconds). `sequence` accepts 1–16 actions; `outline` accepts `auto`, `off`, or `on`. See the Pet Cats Pack catalog below. `studio.scene` selects a scene; `studio_image` optionally points to a local PNG/JPG/WebP/GIF. `now` and `motto` contain short text lists. `layout_mode` accepts `showcase` or `github`, while the official linked-section output uses showcase coordinates.
 
 ## Publishing and troubleshooting
 
@@ -115,6 +115,11 @@ Publish `README.md` and `assets/sections/` in a public repository named exactly 
 
 If overwrite protection triggers, back up manually edited files before using `--force` once; repeated builds should normally work without it. If links do not work, verify `layout`, URLs and outer `<a href>` wrappers. If icons are missing, check exact filenames and paths. If GitHub languages or blog posts are empty, check the selected repositories, feed URL, cache and refresh status. Verify the final GitHub rendering because the platform may sanitize some HTML attributes.
 
+
+Theme mode labels belong beside the names in `themes.generate`, for example
+`"generate": {"paper": "light", "violet": "dark"}`. No separate theme catalog
+field is needed. Labels must match each theme file's `mode`; they do not recolor
+themes. The legacy array of theme names remains supported.
 
 ## Custom SVG icons (v12.8)
 
@@ -158,4 +163,38 @@ Manual-only: profile copy, project descriptions, Now, device hardware, social li
 
 ### Hero introduction
 
-The header username, navigation and companion retain their settings. The main area contains the username, role and bilingual introduction beside the studio illustration. Use bout.highlights for interests and device for workstation details. Remove retired profile.tags, profile.system and theme components.hero.tag_border fields from old configurations; validation reports them as errors. Project tags (projects[].tags) are unchanged.
+The header username, navigation and companion retain their settings. The main area contains the username, role and bilingual introduction beside the studio illustration. Use about.highlights for interests and device for workstation details. Remove retired profile.tags, profile.system and theme components.hero.tag_border fields from old configurations; validation reports them as errors. Project tags (projects[].tags) are unchanged.
+
+### Original Pet Cats Pack
+
+The header uses LuizMelo's [Pet Cats Pack](https://luizmelo.itch.io/pet-cat-pack), licensed CC0. Source archive, license, provenance and lossless pixel data are committed. No artwork pixels are redrawn or recolored by theme.
+
+- `classic_cat`: original gray Cat-3.
+- `tuxedo_cat`: original black Cat-2; the compatibility name is retained, but the original has no white bib.
+- `orange_cat`: original golden-orange Cat-1.
+- `spotted_cat`: original spotted Cat-4.
+- `fluffy_cat`: original long-haired Cat-5.
+- `brown_cat`: original brown Cat-6.
+- `walk` plays the original 8-frame walk, `idle` the 10-frame idle, and `static` the original sitting pose.
+- `story` follows `companion.sequence`: walking, idle, lie-down/sleep/stretch, and meowing with an auto-sized speech bubble for `banner`. Bubble text is never mirrored.
+
+All native actions are available as `animation` or in a story `sequence` (1–16 entries): `walk`, `run`, `idle`, `sit`, `meow`, `lay_down`, `itch`, `sleep1`, `sleep2`, `lick1`, `lick2`, `stretch`. The author's Cat-3 (`classic_cat`) has no Itch sheet; selecting it reports a clear error. `lay_down` and `stretch` play once and hold their final frame. `sleep` automatically combines lying down, sleeping and waking; `banner` meows with a speech bubble. Existing `wander`, `static` and `story` modes are retained.
+
+```json
+"companion": {
+  "character": "fluffy_cat",
+  "animation": "story",
+  "duration": 36,
+  "sequence": ["walk", "sit", "lick1", "sleep", "stretch", "banner", "run"],
+  "banner": "Hello!",
+  "outline": "auto"
+}
+```
+
+`outline` accepts `auto` (default: a thin silhouette outline for the black cat in dark themes), `off` (unmodified original appearance) or `on` (outline the selected cat in every theme). Original pixel colors remain unchanged.
+
+Pixels and transparency are preserved at integer 2x scale. `duration` controls travel/story timing, while native actions keep their own frame cadence. Run `python tools/preview_cats.py` for all six cats and expandable previews of every original action. `python tools/import_pet_cats.py` rebuilds pixel data from the original archive and requires Pillow; normal profile builds remain standard-library-only.
+
+### Theme illustration maintenance
+
+Each theme selects a matching local studio-<theme>.svg using studio.asset. Illustration backgrounds match the page; reading text uses sans-serif fonts while terminal text and chips retain monospace with explicit CJK fallbacks. Paper artwork stays hand-tuned. After editing other theme colors, run python tools/refresh_theme_studios.py to rebuild their illustrations. Run python tools/preview_themes.py to generate all theme sections and the local theme-preview.html comparison page. The README retains the configured light/dark selection.

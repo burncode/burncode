@@ -1,12 +1,109 @@
-# Author: burncode
-# Email: maohan0118@gmail.com
-# Copyright (c) 2026 burncode
-# License: MIT
-"""Tiny SVG pixel companions with SMIL action sequences and static fallback."""
-from html import escape
-CHARACTERS=('classic_cat','tuxedo_cat','orange_cat')
-MOTIONS=('wander','walk','idle','static','story')
-ACTIONS=('walk','idle','sleep','banner')
+"""LuizMelo's CC0 Pet Cats Pack, rendered as lossless self-contained SVG pixels."""
+from collections import defaultdict
+from functools import lru_cache
+from math import ceil
+from pathlib import Path
+import json
+from ..text import width
+
+CHARACTERS=('classic_cat','tuxedo_cat','orange_cat','spotted_cat','fluffy_cat','brown_cat')
+NATIVE_ACTIONS={'walk':'Walk','idle':'Idle','run':'Run','meow':'Meow',
+                'lay_down':'Laying','itch':'Itch','sleep1':'Sleeping1',
+                'sleep2':'Sleeping2','sit':'Sitting','lick1':'Licking 1',
+                'lick2':'Licking 2','stretch':'Stretching'}
+ACTIONS=tuple(NATIVE_ACTIONS)+('sleep','banner')
+MOTIONS=('wander','static','story')+ACTIONS
+PACK=Path(__file__).resolve().parents[2]/'assets'/'companions'/'pet-cats'/'frames.json'
+
+
+@lru_cache(maxsize=1)
+def _pack():
+    return json.loads(PACK.read_text(encoding='utf-8'))
+
+
+def _timeline(motion,sequence,duration,character='classic_cat'):
+    """Use native frames; sleeping includes original lie-down and wake-up clips."""
+    events=[]
+
+    def repeat(action,start,end,step=.1,once=False):
+        count=len(_pack()['characters'][character]['actions'][action]['frames'])
+        i=0;t=start
+        while t<end-1e-9:
+            events.append((t,(action,min(i,count-1) if once else i%count)))
+            i+=1;t=start+i*step
+            if count==1:break
+
+    slots=[]
+    if motion=='story':
+        slots=[(i*duration/len(sequence),(i+1)*duration/len(sequence),a) for i,a in enumerate(sequence)]
+    elif motion=='wander':
+        slots=[(0,duration*.35,'walk'),(duration*.35,duration*.48,'idle'),(duration*.48,duration*.86,'walk'),(duration*.86,duration,'idle')]
+    else:
+        slots=[(0,duration,motion)]
+    for start,end,action in slots:
+        if action=='sleep':
+            laying_end=min(end,start+.8)
+            repeat('Laying',start,laying_end,once=True)
+            # Leave an actual sleep hold before the author's stretching frames.
+            waking_start=end-1.3 if end-start>=2.4 else end
+            if laying_end<waking_start:repeat('Sleeping1',laying_end,waking_start)
+            if waking_start<end:repeat('Stretching',waking_start,end,once=True)
+        else:
+            native={'banner':'Meow','static':'Sitting'}.get(action) or NATIVE_ACTIONS[action]
+            step=.07 if action=='run' else .12 if action in ('idle','lick1','lick2','itch') else .14 if action in ('banner','meow') else .1
+            repeat(native,start,end,step,once=action in ('lay_down','stretch'))
+    return events
+
+
+@lru_cache(maxsize=1024)
+def _contour(character,action,index):
+    pixels=set()
+    for x,y,length,color in _pack()['characters'][character]['actions'][action]['frames'][index]:
+        if len(color)==9 and int(color[7:9],16)<128:continue
+        pixels.update((x+i,y) for i in range(length))
+    edges=[]
+    for x,y in sorted(pixels):
+        if (x,y-1) not in pixels:edges.append(f'M{x} {y}h1')
+        if (x,y+1) not in pixels:edges.append(f'M{x} {y+1}h1')
+        if (x-1,y) not in pixels:edges.append(f'M{x} {y}v1')
+        if (x+1,y) not in pixels:edges.append(f'M{x+1} {y}v1')
+    return ''.join(edges)
+
+
+def _frames(canvas,character,events,duration,static=False,outline='auto',loop=True):
+    cat=_pack()['characters'][character]
+    keys=list(dict.fromkeys(key for _,key in events))
+    canvas.raw('<defs>')
+    for action,index in keys:
+        colors=defaultdict(list)
+        for x,y,length,color in cat['actions'][action]['frames'][index]:
+            colors[color].append(f'M{x} {y}h{length}v1h{-length}z')
+        ident=f'pet-cat-{cat["cat"]}-{action.replace(" ","-")}-{index}'
+        canvas.raw(f'<g id="{ident}" data-action="{action}" data-frame="{index}">')
+        outlined=outline=='on' or (outline=='auto' and canvas.theme.get('mode')=='dark' and character=='tuxedo_cat')
+        if outlined:
+            canvas.raw(f'<path data-role="contrast-outline" d="{_contour(character,action,index)}" fill="none" stroke="{canvas.c["foreground"]}" stroke-opacity="0.58" stroke-width="0.7" shape-rendering="geometricPrecision"/>')
+        for color,paths in colors.items():
+            alpha=f' fill-opacity="{int(color[7:9],16)/255:.10f}"' if len(color)==9 else ''
+            canvas.raw(f'<path data-role="source-pixels" fill="{color[:7]}"{alpha} d="{"".join(paths)}"/>')
+        canvas.raw('</g>')
+    canvas.raw('</defs>')
+    for key in keys:
+        action,index=key
+        initial=int(events[0][1]==key)
+        canvas.raw(f'<use href="#pet-cat-{cat["cat"]}-{action.replace(" ","-")}-{index}" opacity="{initial}">')
+        if not static and len(keys)>1:
+            points=[(0,initial)]
+            for time,active in events[1:]:
+                value=int(active==key)
+                if value!=points[-1][1]:points.append((time/duration,value))
+            points.append((1,initial if loop else int(events[-1][1]==key)))
+            times=';'.join(format(t,'.9g') for t,_ in points)
+            values=';'.join(str(v) for _,v in points)
+            repeat='indefinite' if loop else '1'
+            canvas.raw(f'<animate attributeName="opacity" values="{values}" keyTimes="{times}" calcMode="discrete" dur="{duration}s" repeatCount="{repeat}" fill="freeze"/>')
+        canvas.raw('</use>')
+
 
 def render(canvas,y,cfg,track=(250,750),top=3):
     if not cfg.get('header_cat',True):return
@@ -15,122 +112,49 @@ def render(canvas,y,cfg,track=(250,750),top=3):
     duration=spec.get('duration',16)
     sequence=spec.get('sequence',['walk','idle','sleep','banner','walk']) if motion=='story' else []
     banner=spec.get('banner','I LOVE YOU')
-    x0,x1=track; yy=y+top
-    sprite_scale=1.4  # Preserve original pixel artwork; enlarge only the header companion.
-    ink='#d78437' if character=='orange_cat' else c['foreground']
-    white='#f5f6f2' if character=='tuxedo_cat' else c['background']
-    # All animation takes place in the reserved header track, never over nav links.
+    x0,x1=track;yy=y+top
     canvas.raw(f'<g id="pixel-companion" transform="translate({x0} {yy})">')
-    if motion in ('wander','walk','story'):
-        # Animate relative to the initial translation; absolute coordinates here
-        # previously doubled the header offset and could push the cat off-track.
+    facing=[(0,1)]
+    if motion in ('walk','run','wander','story'):
         if motion=='story':
-            # A continuous round trip with actual holds for idle/sleep/banner.
-            # Keep the sprite in the same reserved track throughout the cycle.
-            values=f'{x0} {yy};{x1} {yy};{x1} {yy};{x1} {yy};{x1} {yy};{x0} {yy}'
-            times='0;0.20;0.40;0.60;0.80;1'
-        elif motion=='wander':
-            values=f'{x0} {yy};{x1} {yy};{x1} {yy};{x0} {yy};{x0} {yy}'
-            times='0;0.35;0.48;0.86;1'
+            n=len(sequence);positions=[x0];current=x0;direction=1
+            for i,action in enumerate(sequence):
+                if action in ('walk','run'):
+                    target=x1 if direction==1 else x0
+                    if facing[-1][1]!=direction:facing.append((i/n,direction))
+                    current=target;direction*=-1
+                positions.append(current)
+            times=[i/n for i in range(n+1)]
+        elif motion in ('walk','run'):
+            positions=[x0,x1,x0];times=[0,.5,1];facing.append((.5,-1))
         else:
-            values=f'{x0} {yy};{x1} {yy};{x0} {yy}'
-            times='0;0.5;1'
-        canvas.raw(f'<animateTransform attributeName="transform" type="translate" values="{values}" keyTimes="{times}" dur="{duration}s" repeatCount="indefinite"/>')
-    canvas.raw(f'<g id="companion-sprite" transform="scale({sprite_scale})">')
-    # Body poses live in the sprite coordinate system; the outer track never changes.
-    canvas.raw('<g id="companion-pose">')
-    if motion=='story':
-        # Travel / sit down / curl up / stretch & rise / travel home.
-        # Short transitions avoid sudden snapping between silhouettes.
-        canvas.raw(f'<animateTransform attributeName="transform" type="translate" values="0 0;0 0;0 3;0 3;0 5;0 5;0 2;-2 3;0 0;0 0" keyTimes="0;0.19;0.23;0.39;0.43;0.59;0.64;0.72;0.80;1" dur="{duration}s" repeatCount="indefinite"/>')
-        canvas.raw(f'<animateTransform attributeName="transform" additive="sum" type="scale" values="1 1;1 1;1 0.88;1 0.88;1 0.78;1 0.78;1.10 0.86;1.16 0.88;1 1;1 1" keyTimes="0;0.19;0.23;0.39;0.43;0.59;0.64;0.72;0.80;1" dur="{duration}s" repeatCount="indefinite"/>')
-
-    # Story state windows are synchronized to the travel animation.
-    # One timeline: walk outbound / look around / sleep / banner / walk home.
-    # The sequence list remains supported for overlay content and visibility.
-    story_times = '0;0.20;0.40;0.60;0.80;1'
-    story_walk = '1;0;0;0;1;1'
-    story_sleep = '0;0;1;0;0;0'
-    # Refined 36x28 pixel cat. All detail remains inside the reserved header track.
-    ear_inner = '#e9a3a0' if character != 'orange_cat' else '#f2ba8d'
-    highlight = '#737985' if character != 'orange_cat' else '#f4bd78'
-    # Tail is drawn behind the body; keep the original motion anchor.
-    canvas.raw('<g id="companion-tail">')
-    if motion!='static':
-        canvas.raw('<animateTransform attributeName="transform" type="rotate" values="0 5 14;-12 5 14;0 5 14;9 5 14;0 5 14" dur="2.8s" repeatCount="indefinite"/>')
-    canvas.rect(1,10,5,8,ink,radius=0)
-    canvas.rect(0,8,4,5,ink,radius=0)
-    canvas.raw('</g>')
-    # Distinctive coral ear insets and tiny forehead highlight.
-    canvas.rect(6,8,24,14,ink,radius=0)
-    canvas.rect(8,2,7,10,ink,radius=0)
-    canvas.rect(23,2,7,10,ink,radius=0)
-    canvas.rect(10,4,3,5,ear_inner,radius=0)
-    canvas.rect(25,4,3,5,ear_inner,radius=0)
-    canvas.rect(16,9,5,2,highlight,radius=0)
-    if character=='tuxedo_cat':
-        canvas.rect(14,16,9,6,white,radius=0)
-        canvas.rect(11,5,3,4,white,radius=0)
-    elif character=='orange_cat':
-        for px in (10,18,26):canvas.rect(px,9,2,4,'#a9552c',radius=0)
-    canvas.rect(12,13,3,3,white,radius=0)
-    canvas.rect(24,13,3,3,white,radius=0)
-    canvas.rect(18,18,4,2,ear_inner,radius=0)
-    canvas.rect(9,17,3,2,ear_inner,radius=0)
-    canvas.rect(28,17,3,2,ear_inner,radius=0)
-    canvas.rect(19,20,2,1,white,radius=0)
-    canvas.line(8,18,2,16,c['muted']);canvas.line(29,18,35,16,c['muted'])
-    # Two independently animated legs. Opposite phases make a readable pixel walk.
-    # They stop during sit/sleep/stretch, unlike the old rigid sliding sprite.
-    for side,px in (('front',9),('back',24)):
-        canvas.raw(f'<g id="companion-leg-{side}">')
-        if motion in ('walk','wander','story'):
-            phase = '0 0;2 -2;0 0;-2 -1;0 0' if side=='front' else '0 0;-2 -1;0 0;2 -2;0 0'
-            canvas.raw(f'<animateTransform attributeName="transform" type="translate" values="{phase}" dur="0.64s" repeatCount="indefinite"/>')
-            if motion=='story':
-                canvas.raw(f'<animate attributeName="opacity" values="1;0;0;0;1;1" keyTimes="{story_times}" calcMode="discrete" dur="{duration}s" repeatCount="indefinite"/>')
-        canvas.rect(px,22,6,5,ink,radius=0)
-        canvas.rect(px,25,6,2,ear_inner,radius=0)
+            positions=[x0,x1,x1,x0,x0];times=[0,.35,.48,.86,1];facing.append((.48,-1))
+        values=';'.join(f'{x} {yy}' for x in positions)
+        key_times=';'.join(format(t,'.9g') for t in times)
+        easing=' calcMode="spline" keySplines="'+';'.join(['0.35 0 0.65 1']*(len(times)-1))+'"' if motion=='story' else ''
+        canvas.raw(f'<animateTransform attributeName="transform" type="translate" values="{values}" keyTimes="{key_times}"{easing} dur="{duration}s" repeatCount="indefinite"/>')
+    canvas.raw('<g id="companion-sprite"><g transform="translate(25 0)"><g id="companion-facing">')
+    if len(facing)>1:
+        facing.append((1,1))
+        values=';'.join(f'{d} 1' for _,d in facing)
+        times=';'.join(format(t,'.9g') for t,_ in facing)
+        canvas.raw(f'<animateTransform attributeName="transform" type="scale" values="{values}" keyTimes="{times}" calcMode="discrete" dur="{duration}s" repeatCount="indefinite"/>')
+    canvas.raw('<g transform="translate(-25 0)">')
+    # Only integer scaling enlarges the original pixels. No deformation/recoloring.
+    canvas.raw('<g id="companion-pose" transform="scale(2)" data-source="LuizMelo/Pet Cats Pack" shape-rendering="crispEdges">')
+    _frames(canvas,character,_timeline(motion,sequence,duration,character),duration,motion=='static',spec.get('outline','auto'),motion not in ('lay_down','stretch'))
+    canvas.raw('</g></g></g></g>')
+    if (motion=='story' and 'banner' in sequence) or motion=='banner':
+        bubble_sequence=sequence if motion=='story' else ['banner']
+        n=len(bubble_sequence);visible=[int(a=='banner') for a in bubble_sequence]
+        values=';'.join(map(str,visible+[visible[0]]))
+        times=';'.join(format(i/n,'.9g') for i in range(n+1))
+        canvas.raw(f'<g id="companion-banner" transform="scale(1.4)" opacity="{visible[0]}"><animate attributeName="opacity" values="{values}" keyTimes="{times}" calcMode="discrete" dur="{duration}s" repeatCount="indefinite"/>')
+        text_size=13.2 if canvas.density=='showcase' else 11.6 if canvas.density=='github' else 11
+        w=ceil(width(banner,text_size))+16;x=-9-w
+        canvas.rect(x,0,w,24,c['background'],stroke=c['accent'],radius=4)
+        canvas.raw(f'<path d="M-10 8 L-2 13 L-10 18 Z" fill="{c["background"]}"/>')
+        canvas.raw(f'<path id="companion-speech-tail" d="M-9 8 L-2 13 L-9 18" fill="none" stroke="{c["accent"]}" stroke-width="{canvas.style["border_width"]}" stroke-linejoin="round"/>')
+        canvas.text(x+8,16,banner,11,c['accent'],bold=True)
         canvas.raw('</g>')
-    if motion=='story':
-        # Grounded tucked paws while sitting or asleep, not a floating body.
-        canvas.raw(f'<g opacity="0"><animate attributeName="opacity" values="0;1;1;1;0;0" keyTimes="{story_times}" calcMode="discrete" dur="{duration}s" repeatCount="indefinite"/>')
-        canvas.rect(10,23,9,4,ink,radius=0)
-        canvas.rect(21,23,9,4,ink,radius=0)
-        canvas.rect(12,25,5,2,ear_inner,radius=0)
-        canvas.rect(23,25,5,2,ear_inner,radius=0)
-        canvas.raw('</g>')
-    if motion!='static':
-        # A brief blink every cycle, with both eyelids synchronized.
-        for xx in (12,24):
-            canvas.raw(f'<rect x="{xx}" y="13" width="3" height="0" fill="{ink}"><animate attributeName="height" values="0;0;3;0;0" keyTimes="0;0.71;0.73;0.75;1" dur="{duration}s" repeatCount="indefinite"/></rect>')
-    if motion=='story':
-        # Closed eyelids during sleep, and a small glance during idle.
-        canvas.raw(f'<g opacity="0"><animate attributeName="opacity" values="{story_sleep}" keyTimes="{story_times}" calcMode="discrete" dur="{duration}s" repeatCount="indefinite"/>')
-        canvas.rect(11,13,6,3,ink,radius=0)
-        canvas.rect(23,13,6,3,ink,radius=0)
-        canvas.line(12,15,16,15,white)
-        canvas.line(24,15,28,15,white)
-        canvas.raw('</g>')
-        canvas.raw(f'<g opacity="0"><animate attributeName="opacity" values="0;1;0;0;0;0" keyTimes="{story_times}" calcMode="discrete" dur="{duration}s" repeatCount="indefinite"/>')
-        canvas.rect(12,13,3,3,ink,radius=0)
-        canvas.rect(15,13,3,3,white,radius=0)
-        canvas.raw('</g>')
-        n=len(sequence)
-        def visibility(action):
-            vals=['1' if s==action else '0' for s in sequence]
-            return ';'.join(vals+[vals[0]])
-        def times():return ';'.join(f'{i/n:.5f}' for i in range(n+1))
-        if 'sleep' in sequence:
-            canvas.raw(f'<g opacity="0"><animate attributeName="opacity" values="{visibility("sleep")}" keyTimes="{times()}" calcMode="discrete" dur="{duration}s" repeatCount="indefinite"/>')
-            canvas.text(34,12,'z',11,c['muted']);canvas.text(43,7,'z',9,c['muted']);canvas.text(51,5,'z',7,c['accent'])
-            canvas.raw('</g>')
-        if 'banner' in sequence:
-            # Speech banner follows the cat. Limit to short text so it stays in the header track.
-            canvas.raw(f'<g opacity="0"><animate attributeName="opacity" values="{visibility("banner")}" keyTimes="{times()}" calcMode="discrete" dur="{duration}s" repeatCount="indefinite"/>')
-            canvas.rect(-122,0,113,24,c['background'],stroke=c['accent'],radius=1)
-            canvas.text(-116,16,banner,11,c['accent'],bold=True,max_width=100)
-            canvas.raw('</g>')
-    canvas.raw('</g>')  # companion-pose
-    canvas.raw('</g>')  # companion-sprite
-    canvas.raw('</g>')  # animated track
+    canvas.raw('</g></g>')  # sprite, animated track

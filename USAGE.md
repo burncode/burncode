@@ -175,10 +175,25 @@ Device 是**手工配置**的设备介绍，不会读取你当前电脑硬件。
 
 - `themes.light` / `themes.dark`：分别选择浅色与深色主题；两者必须包含在 `themes.generate` 中。
 - `themes.generate`：指定要生成或校验的主题集合。实际正式 README 只引用 `light` 与 `dark` 对应的两套区块 SVG。
+
+主题明暗类型直接标注在 `themes.generate` 的名称旁，不再设置独立的主题目录字段：
+
+```json
+"themes": {
+  "light": "paper",
+  "dark": "violet",
+  "generate": {
+    "paper": "light",
+    "violet": "dark"
+  }
+}
+```
+
+这里的 `light` / `dark` 是便于阅读的类型标注，必须与主题文件本身的 `mode` 一致，不会改变主题配色。旧版纯名称数组仍兼容。
 - `colors`：按主题覆盖颜色，键和值需要符合主题加载器约束。
 - `i18n.locale`：`zh-CN` 或 `en-US`；翻译词条位于 `profilegen/locales/`。保持两个语言文件的键一致。
 - `header_nav`：顶部导航标签；`header_cat`：是否显示猫。
-- `companion.character`：`classic_cat`、`tuxedo_cat`、`orange_cat`；`animation`：`wander`、`walk`、`idle`、`static`、`story`；`duration`：4–60 秒；`sequence`：动画动作列表；`banner`：短文字。
+- `companion.character`：六种原版猫，完整名称见下方 Pet Cats Pack 章节；`animation`：原版动作或 `wander`、`static`、`story`；`duration`：4–60 秒；`sequence`：1–16 项动作列表；`banner`：短文字；`outline`：`auto` / `off` / `on`。
 - `studio.scene`：使用已有场景；`studio_image`：可选本地 PNG/JPG/WebP/GIF 图片，具体场景列表见源码 `SCENES`。
 - `layout_mode`：`showcase` 或 `github`；正式分段输出使用 showcase 宽度，以保证可点击区块坐标一致。
 
@@ -330,4 +345,53 @@ Python 源文件顶部统一包含作者、联系邮箱、版权和 MIT 许可�
 
 ### Hero 简介区域
 
-顶栏用户名、导航与小猫保持独立配置。主体显示用户名、身份、英文与中文简介，右侧显示场景插画。兴趣标签统一使用 bout.highlights；设备信息统一使用 device。profile.tags、profile.system 及主题 components.hero.tag_border 已移除，旧配置需删除这些字段，校验会明确报错。项目的 projects[].tags 不受影响。
+顶栏用户名、导航与小猫保持独立配置。主体显示用户名、身份、英文与中文简介，右侧显示场景插画。兴趣标签统一使用 about.highlights；设备信息统一使用 device。profile.tags、profile.system 及主题 components.hero.tag_border 已移除，旧配置需删除这些字段，校验会明确报错。项目的 projects[].tags 不受影响。
+
+### Pet Cats Pack 原版像素猫
+
+顶栏使用 LuizMelo 的 [Pet Cats Pack](https://luizmelo.itch.io/pet-cat-pack)，许可为 CC0。原始压缩包、许可、来源与无损转换数据均保存在仓库中；没有重画像素或根据主题改变毛色。
+
+- `classic_cat`：原版 Cat-3 灰猫。
+- `tuxedo_cat`：原版 Cat-2 黑猫；保留旧配置名，原版不是白胸燕尾服猫。
+- `orange_cat`：原版 Cat-1 金橘猫。
+- `spotted_cat`：原版 Cat-4 斑点猫。
+- `fluffy_cat`：原版 Cat-5 长毛猫。
+- `brown_cat`：原版 Cat-6 棕色猫。
+- `walk` 使用原版 8 帧走路，`idle` 使用原版 10 帧待机，`static` 使用原版坐姿。
+- `story` 按 `companion.sequence` 播放：`walk` 走路、`idle` 待机、`sleep` 躺下/睡觉/伸展、`banner` 喵叫并显示对话气泡。气泡根据 `companion.banner` 自适应宽度，文字不随猫咪镜像。
+
+完整动作可以直接填入 `companion.animation`，也可以组合进 `story` 的 `sequence`（1–16 项）：
+
+| 配置值 | 原版动作 |
+|---|---|
+| `walk` / `run` | 走路 / 奔跑，自动往返和转向 |
+| `idle` / `sit` | 待机 / 坐着 |
+| `meow` | 喵叫 |
+| `lay_down` | 躺下，播完保持最后一帧 |
+| `itch` | 挠痒；原包 Cat-3 灰猫没有该素材，选择时明确报错 |
+| `sleep1` / `sleep2` | 两种睡姿 |
+| `lick1` / `lick2` | 两种舔毛动作 |
+| `stretch` | 伸展，播完保持最后一帧 |
+| `sleep` | 自动组合躺下、睡觉和醒来伸展 |
+| `banner` | 喵叫并显示自适应对话气泡 |
+
+保留 `wander`（走走停停）、`static`（静态坐姿）、`story`（按序播放）。例如：
+
+```json
+"companion": {
+  "character": "fluffy_cat",
+  "animation": "story",
+  "duration": 36,
+  "sequence": ["walk", "sit", "lick1", "sleep", "stretch", "banner", "run"],
+  "banner": "Hello!",
+  "outline": "auto"
+}
+```
+
+`outline` 可设为 `auto`、`off` 或 `on`。默认 `auto` 只在暗色主题为黑猫添加细轮廓描边，原始毛色不变；`off` 完全保留原版显示，`on` 对所选猫始终开启描边。
+
+猫咪按整数 2 倍放大，保持原版像素与透明度。`duration` 控制整段往返/剧情周期，原版动作帧保留独立播放节奏。`python tools/preview_cats.py` 生成六只猫和全部动作的预览（展开每只猫的“全部原版动作”）；`python tools/import_pet_cats.py` 可从原始压缩包重建像素数据（只有该开发工具需要 Pillow，日常构建仍仅用 Python 标准库）。
+
+### 全主题插画维护
+
+所有主题使用独立的 assets/studio/studio-主题名.svg，由主题 studio.asset 选择。插画外层底色与页面一致，正文使用无衬线字体，终端和标签保留等宽字体并指定中文回退字体。Paper 插画保留人工确认版本。修改其他主题配色后可运行 python tools/refresh_theme_studios.py 更新对应插画；运行 python tools/preview_themes.py 生成全部主题区块和 theme-preview.html 对照页。默认 README 的主题选择仍由 config.json 决定。

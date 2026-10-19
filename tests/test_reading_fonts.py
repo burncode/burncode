@@ -18,12 +18,9 @@ class ReadingFontTests(unittest.TestCase):
             texts = {node.text: node.attrib['font-family'] for node in root.findall('.//s:text', NS)}
             terminal = texts[cfg['profile']['username'] + '@github:~']
             prose = texts[cfg['profile']['tagline_zh']]
-            if theme == 'paper':
-                self.assertIn('Microsoft YaHei', prose)
-                self.assertNotEqual(prose, terminal)
-                self.assertIn('Mono', terminal)
-                self.assertEqual(texts[cfg['projects'][0]['description']], prose)
-                self.assertEqual(texts['› ' + cfg['about']['lines'][0]], prose)
-                self.assertEqual(texts['› ' + cfg['now'][0]], prose)
-            else:
-                self.assertEqual(prose, terminal)
+            self.assertIn('Microsoft YaHei', prose)
+            self.assertNotEqual(prose, terminal)
+            self.assertIn('Mono', terminal)
+            self.assertEqual(texts[cfg['projects'][0]['description']], prose)
+            self.assertEqual(texts['› ' + cfg['about']['lines'][0]], prose)
+            self.assertEqual(texts['› ' + cfg['now'][0]], prose)

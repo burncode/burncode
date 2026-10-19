@@ -4,14 +4,15 @@
   "colors": {
     "background": "#f7fbff",
     "foreground": "#142638",
-    "muted": "#667f93",
-    "accent": "#288db6",
+    "muted": "#405d73",
+    "accent": "#176b8a",
     "border": "#d5e2eb",
     "surface": "#e8f1f7"
   },
   "fonts": {
-    "body": "DejaVu Sans Mono, Consolas, monospace",
-    "heading": "DejaVu Sans Mono, Consolas, monospace"
+    "body": "DejaVu Sans Mono, Consolas, Microsoft YaHei, PingFang SC, Noto Sans CJK SC, monospace",
+    "heading": "DejaVu Sans Mono, Consolas, Microsoft YaHei, PingFang SC, Noto Sans CJK SC, monospace",
+    "reading": "Segoe UI, Noto Sans CJK SC, Microsoft YaHei, PingFang SC, sans-serif"
   },
   "typography": {
     "title_size": 64,
@@ -25,7 +26,7 @@
   },
   "studio": {
     "scene": "rainy_loft",
-    "asset": "studio-day"
+    "asset": "studio-ice"
   },
   "components": {
     "projects": {
@@ -42,7 +43,7 @@
     },
     "activity": {
       "empty_color": "#e8f1f7",
-      "active_color": "#288db6"
+      "active_color": "#176b8a"
     },
     "hero": {
       "variant": "compact",

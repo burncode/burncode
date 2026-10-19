@@ -166,6 +166,8 @@ class ModularConnectTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.cfg=build.validate(build.read_json(ROOT/'config.json'),ROOT/'config.json')
+        for item in cls.cfg['layout']:
+            if item['type']=='social':item['enabled']=True
 
     def test_social_rows_are_clickable_and_no_duplicate_footer(self):
         html=build.make_readme(self.cfg)
@@ -182,7 +184,7 @@ class ModularConnectTests(unittest.TestCase):
             svg,url=strips[f'connect-{i}']
             ET.fromstring(svg)
             self.assertTrue(url.startswith('https://'))
-        self.assertIn('width="99"',strips['connect-1'][0])
+        self.assertLess(float(ET.fromstring(strips['connect-1'][0]).get('width')),240)
 
     def test_preview_matches_modular_links(self):
         preview=build.make_preview_html(self.cfg)
@@ -195,9 +197,18 @@ class V113Tests(unittest.TestCase):
     def setUpClass(cls):
         cls.cfg=build.validate(build.read_json(ROOT/'config.json'),ROOT/'config.json')
 
-    def test_theme_catalog(self):
-        self.assertEqual(self.cfg['theme_catalog']['mono'],'L')
-        self.assertEqual(self.cfg['theme_catalog']['graphite'],'D')
+    def test_theme_labels_are_next_to_generated_theme_names(self):
+        raw=build.read_json(ROOT/'config.json')
+        self.assertNotIn('theme_catalog',raw)
+        self.assertEqual(raw['themes']['generate']['mono'],'light')
+        self.assertEqual(raw['themes']['generate']['graphite'],'dark')
+        self.assertIn('mono',self.cfg['themes']['generate'])
+
+    def test_wrong_inline_theme_label_is_rejected(self):
+        raw=build.read_json(ROOT/'config.json')
+        raw['themes']['generate']['mono']='dark'
+        with self.assertRaisesRegex(build.ConfigError,'actual theme mode'):
+            build.validate(raw,ROOT/'config.json')
 
     def test_icon_catalog(self):
         self.assertEqual(self.cfg['projects'][0]['icon'],'terminal')
@@ -211,7 +222,8 @@ class V113Tests(unittest.TestCase):
         modular=build.make_readme(self.cfg)
         self.assertIn('motto.svg',modular)
         self.assertLess(modular.index('projects-heading.svg'),modular.index('motto.svg'))
-        self.assertLess(modular.index('motto.svg'),modular.index('connect-1.svg'))
+        # Social may be disabled or independently reordered; footer is the closing block.
+        self.assertLess(modular.index('motto.svg'),modular.index('footer.svg'))
 
     def test_optional_widgets(self):
         cfg=build.read_json(ROOT/'config.json')

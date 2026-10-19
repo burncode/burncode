@@ -20,7 +20,10 @@ class V116Tests(unittest.TestCase):
   cfg=copy.deepcopy(self.cfg);cfg['_account']={'followers':8,'following':5,'public_repos':40,'public_gists':1}
   svg=build.render(cfg,'mono');self.assertIn('Featured stars',svg);self.assertIn('translate(1036 ',svg)
  def test_social_brand_mark(self):
-  strips=build.render_sections(self.cfg,'mono')
+  cfg=copy.deepcopy(self.cfg)
+  for item in cfg['layout']:
+   if item['type']=='social':item['enabled']=True
+  strips=build.render_sections(cfg,'mono')
   s=strips['connect-1'][0];ET.fromstring(s)
   self.assertIn('viewBox="0 0 99 38"',s)
   self.assertNotIn('>GH</text>',s)

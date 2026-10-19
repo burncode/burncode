@@ -55,6 +55,7 @@ from urllib.parse import urlparse
 
 from profilegen.components.registry import COMPONENTS
 from profilegen.components import compact
+from profilegen.components import companion as companion_art
 from profilegen.i18n import locale_names, load_locale
 from profilegen.components.studio import SCENES
 from profilegen.svg import Canvas, svg_document
@@ -182,18 +183,26 @@ def validate(config, config_path):
     character=companion.get('character','classic_cat')
     motion=companion.get('animation',{'walk':'walk','static':'static'}.get(legacy.get('motion','walk'),'walk'))
     duration=companion.get('duration',legacy.get('duration',16))
-    if character not in ('classic_cat','tuxedo_cat','orange_cat'):
-        raise ConfigError('companion.character must be classic_cat, tuxedo_cat or orange_cat')
-    if motion not in ('wander','walk','idle','static','story'):
-        raise ConfigError('companion.animation must be wander, walk, idle, story or static')
+    if character not in companion_art.CHARACTERS:
+        raise ConfigError('companion.character must be one of '+', '.join(companion_art.CHARACTERS))
+    if motion not in companion_art.MOTIONS:
+        raise ConfigError('companion.animation must be one of '+', '.join(companion_art.MOTIONS))
     if type(duration) not in (int,float) or not 4<=duration<=60:
         raise ConfigError('companion.duration must be 4..60 seconds')
     sequence=companion.get('sequence',['walk','idle','sleep','banner','walk'])
-    if not isinstance(sequence,list) or not 1<=len(sequence)<=8 or any(a not in ('walk','idle','sleep','banner') for a in sequence):
-        raise ConfigError('companion.sequence must contain 1..8 supported actions')
+    if not isinstance(sequence,list) or not 1<=len(sequence)<=16 or any(a not in companion_art.ACTIONS for a in sequence):
+        raise ConfigError('companion.sequence must contain 1..16 supported actions')
+    active_actions=sequence if motion=='story' else [motion]
+    available=companion_art._pack()['characters'][character]['actions']
+    for action in active_actions:
+        native=companion_art.NATIVE_ACTIONS.get(action)
+        if native and native not in available:
+            raise ConfigError(f'Original {character} has no {native} animation; choose another cat/action')
+    outline=companion.get('outline','auto')
+    if outline not in ('auto','off','on'):raise ConfigError('companion.outline must be auto, off or on')
     banner=companion.get('banner','I LOVE YOU')
     check_text(banner,'companion.banner',18)
-    cfg['companion']={'character':character,'animation':motion,'duration':duration,'sequence':sequence,'banner':banner}
+    cfg['companion']={'character':character,'animation':motion,'duration':duration,'sequence':sequence,'banner':banner,'outline':outline}
     if not isinstance(cfg.get('header_cat',True),bool):
         raise ConfigError('header_cat must be a boolean')
     mode=cfg.get('layout_mode','showcase')
@@ -345,15 +354,15 @@ def validate(config, config_path):
     cfg['closing']=closing
     themes=cfg.get('themes')
     if not isinstance(themes,dict):raise ConfigError('themes must be an object')
-    chosen=check_list(themes.get('generate',[]),'themes.generate',30,40)
+    generated=themes.get('generate',[])
+    chosen=check_list(list(generated) if isinstance(generated,dict) else generated,'themes.generate',30,40)
     if not chosen or len(chosen)!=len(set(chosen)):
         raise ConfigError('themes.generate must contain unique theme names')
-    for name in chosen:load_theme(name)
-    catalog=cfg.get('theme_catalog',{})
-    if not isinstance(catalog,dict):raise ConfigError('theme_catalog must be an object')
-    for name,mode_label in catalog.items():
-        if name not in theme_names() or mode_label!=load_theme(name).get('mode','light')[0].upper():
-            raise ConfigError(f'theme_catalog.{name} must match actual theme mode (L/D)')
+    for name in chosen:
+        theme=load_theme(name)
+        if isinstance(generated,dict) and generated[name]!=theme.get('mode','light'):
+            raise ConfigError(f'themes.generate.{name} must match actual theme mode: '+theme.get('mode','light'))
+    themes['generate']=chosen
     # Fix for v9.3 --themes mono: default light/dark are resolved to generated themes.
     for mode in ('light','dark'):
         if themes.get(mode) not in chosen:

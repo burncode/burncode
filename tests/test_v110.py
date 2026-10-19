@@ -29,7 +29,8 @@ class NarrowAndCompanionTests(unittest.TestCase):
         svg=build.render(self.cfg,'mono')
         self.assertIn(self.cfg['companion']['banner'],svg)
         self.assertIn('calcMode="discrete"',svg)
-        self.assertIn('>z</text>',svg)
+        self.assertIn('data-action="Laying"',svg)
+        self.assertIn('data-action="Sleeping1"',svg)
 
     def test_story_input_rejected(self):
         cfg=copy.deepcopy(self.cfg);cfg['companion']['sequence']=['walk','<script>']

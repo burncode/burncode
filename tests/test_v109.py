@@ -3,6 +3,7 @@
 # Copyright (c) 2026 burncode
 # License: MIT
 import unittest, copy, json
+import xml.etree.ElementTree as ET
 from pathlib import Path
 import build
 
@@ -20,7 +21,9 @@ class CompanionAndWidthTests(unittest.TestCase):
         for mode in ('wander','walk','idle','static'):
             c=self.cfg();c['companion']['animation']=mode
             svg=build.render(build.validate(c,ROOT/'config.json'),'mono')
-            self.assertEqual('animateTransform' in svg,mode!='static')
+            cat=ET.fromstring(svg).find('.//{http://www.w3.org/2000/svg}g[@id="pixel-companion"]')
+            animated=any(n.tag.rsplit('}',1)[-1] in ('animate','animateTransform') for n in cat.iter())
+            self.assertEqual(animated,mode!='static')
     def test_bad_character(self):
         c=self.cfg();c['companion']['character']='dog'
         with self.assertRaises(build.ConfigError):build.validate(c,ROOT/'config.json')

@@ -17,7 +17,7 @@
   },
   "projects": [
     {
-      "name": "dsh-sketchup",
+      "name": "python-excel",
       "description": "python使用xlrd和xlwt 读写考勤 excel表格.",
       "tags": [
         "python",
@@ -66,17 +66,17 @@
   "themes": {
     "light": "paper",
     "dark": "violet",
-    "generate": [
-      "mono",
-      "graphite",
-      "matrix",
-      "amber",
-      "violet",
-      "paper",
-      "ice",
-      "sage",
-      "lavender"
-    ]
+    "generate": {
+      "mono": "light",
+      "graphite": "dark",
+      "matrix": "dark",
+      "amber": "dark",
+      "violet": "dark",
+      "paper": "light",
+      "ice": "light",
+      "sage": "light",
+      "lavender": "light"
+    }
   },
   "colors": {},
   "studio_image": "",
@@ -155,15 +155,17 @@
   "header_cat": true,
   "layout_mode": "showcase",
   "companion": {
-    "character": "tuxedo_cat",
+    "character": "orange_cat",
     "animation": "story",
     "duration": 24,
     "sequence": [
       "walk",
-      "idle",
+      "sit",
+      "lick1",
       "sleep",
+      "stretch",
       "banner",
-      "walk"
+      "run"
     ],
     "banner": "I love you"
   },
@@ -194,17 +196,6 @@
       "cache_hours": 12,
       "posts": []
     }
-  },
-  "theme_catalog": {
-    "mono": "L",
-    "graphite": "D",
-    "matrix": "D",
-    "amber": "D",
-    "violet": "D",
-    "paper": "L",
-    "ice": "L",
-    "sage": "L",
-    "lavender": "L"
   },
   "about": {
     "lines": [

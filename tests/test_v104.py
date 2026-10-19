@@ -46,7 +46,7 @@ class V104Tests(unittest.TestCase):
         cfg['_contributions']={'total':1,'days':[{'level':4}]}
         svg=build.render(cfg,'sage')
         self.assertIn('1 contributions',svg)
-        self.assertIn('#438f72',svg)
+        self.assertIn(build.load_theme('sage')['colors']['accent'],svg)
 
     def test_custom_theme_icon(self):
         cfg=copy.deepcopy(self.cfg)

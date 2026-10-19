@@ -19,7 +19,10 @@ class V115Tests(unittest.TestCase):
   self.assertNotIn('>0</text>',''.join(c.parts))
  def test_about_and_social(self):
   s=build.render(self.cfg,'mono');self.assertIn('关于我',s)
-  md=build.make_readme(self.cfg)
+  cfg=copy.deepcopy(self.cfg)
+  for item in cfg['layout']:
+   if item['type']=='social':item['enabled']=True
+  md=build.make_readme(cfg)
   self.assertIn('width="99"',md)
  def test_account_cache_and_failure(self):
   class Fake:

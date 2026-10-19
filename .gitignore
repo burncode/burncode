@@ -1,3 +1,5 @@
 __pycache__/
 *.py[cod]
 preview.html
+theme-preview.html
+cat-preview.html

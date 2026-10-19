@@ -32,7 +32,10 @@ class V114Tests(unittest.TestCase):
         self.assertIn('>10</text>',svg)
         self.assertIn('>'+cfg['projects'][0]['tags'][0]+'</text>',svg)
     def test_modular_connect_is_compact(self):
-        md=build.make_readme(self.cfg)
+        cfg=copy.deepcopy(self.cfg)
+        for item in cfg['layout']:
+            if item['type']=='social':item['enabled']=True
+        md=build.make_readme(cfg)
         self.assertIn('class="social-toolbar"',md)
         self.assertIn('width="99"',md)
         self.assertNotIn('social links below',md)

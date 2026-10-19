@@ -24,8 +24,8 @@ def render(canvas,cfg,y,options):
     size=canvas.theme['typography']['title_size']
     while width(p['username'],size)>400 and size>30:size-=2
     canvas.text(90,y+127,p['username'],size,bold=True,max_width=400)
-    cursor_x=min(509,103+width(p['username'],size))
-    canvas.raw(f'<rect x="{cursor_x}" y="{y+116}" width="23" height="8" fill="{c["accent"]}"><animate attributeName="opacity" values="1;0.22;1" dur="2.3s" repeatCount="indefinite"/></rect>')
+    cursor_x=min(509,98+width(p['username'],size)*0.94)
+    canvas.raw(f'<rect x="{cursor_x}" y="{y+116}" width="16" height="7" fill="{c["accent"]}"><animate attributeName="opacity" values="1;0.22;1" dur="2.3s" repeatCount="indefinite"/></rect>')
     canvas.text(92,y+171,'// '+p['role'],19,c['accent'],max_width=440)
     canvas.line(92,y+194,92,y+254,c['accent'])
     canvas.text(105,y+216,p['tagline'],16,max_width=440,family='reading')

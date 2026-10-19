@@ -5,13 +5,14 @@
     "background": "#0c1015",
     "foreground": "#e6ebf2",
     "muted": "#98a6b8",
-    "accent": "#72b8ff",
+    "accent": "#8bb9df",
     "border": "#34414e",
     "surface": "#18212b"
   },
   "fonts": {
-    "body": "DejaVu Sans Mono, Consolas, monospace",
-    "heading": "DejaVu Sans Mono, Consolas, monospace"
+    "body": "DejaVu Sans Mono, Consolas, Microsoft YaHei, PingFang SC, Noto Sans CJK SC, monospace",
+    "heading": "DejaVu Sans Mono, Consolas, Microsoft YaHei, PingFang SC, Noto Sans CJK SC, monospace",
+    "reading": "Segoe UI, Noto Sans CJK SC, Microsoft YaHei, PingFang SC, sans-serif"
   },
   "typography": {
     "title_size": 64,
@@ -25,7 +26,7 @@
   },
   "studio": {
     "scene": "night_city",
-    "asset": "studio-night"
+    "asset": "studio-graphite"
   },
   "components": {
     "projects": {
@@ -42,7 +43,7 @@
     },
     "activity": {
       "empty_color": "#18212b",
-      "active_color": "#72b8ff"
+      "active_color": "#8bb9df"
     },
     "hero": {
       "variant": "compact",

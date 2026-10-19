@@ -27,6 +27,8 @@ class V108Tests(unittest.TestCase):
         with self.assertRaises(build.ConfigError):build.validate(c,ROOT/'config.json')
     def test_readme_links_visible(self):
         c=copy.deepcopy(self.cfg);c['projects'][0]['url']='https://github.com/burncode/sample'
+        for item in c['layout']:
+            if item['type']=='social':item['enabled']=True
         c['social']=[{'label':'Email','url':'mailto:hello@example.com'}]
         text=build.make_readme(c)
         self.assertIn('project-1.svg',text)

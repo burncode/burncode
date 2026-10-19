@@ -15,6 +15,8 @@ class V10Tests(unittest.TestCase):
         cfg=build.validate(self.config,Path('config.json'))
         self.assertIn('项目',build.render(cfg,'mono'))
     def test_social(self):
+        for item in self.config['layout']:
+            if item['type']=='social':item['enabled']=True
         cfg=build.validate(self.config,Path('config.json'))
         self.assertIn('GitHub',build.make_readme(cfg))
     def test_metric(self):
