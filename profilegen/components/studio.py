@@ -33,6 +33,8 @@ def render_asset(canvas, x, y, w, h, name):
     # Serialize as a nested inline SVG so GitHub can render it without network access.
     from html import escape
     canvas.raw(f'<svg x="{x}" y="{y}" width="{w}" height="{h}" viewBox="{escape(viewbox)}" preserveAspectRatio="xMidYMid meet">')
+    # Emit standard SVG elements, not auto-generated ns0:rect/ns0:g prefixes.
+    ET.register_namespace('', 'http://www.w3.org/2000/svg') 
     for el in root:
         canvas.raw(ET.tostring(el, encoding='unicode'))
     canvas.raw('</svg>')

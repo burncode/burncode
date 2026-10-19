@@ -24,7 +24,8 @@
     "pixel_density": 2
   },
   "studio": {
-    "scene": "rainy_loft"
+    "scene": "rainy_loft",
+    "asset": "studio-day"
   },
   "components": {
     "projects": {

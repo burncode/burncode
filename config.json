@@ -78,7 +78,7 @@
     "以无法为有法."
   ],
   "themes": {
-    "light": "lavender",
+    "light": "paper",
     "dark": "violet",
     "generate": [
       "mono",
@@ -133,7 +133,7 @@
     },
      {
       "type": "social",
-      "enabled": true
+      "enabled": false
     },
     {
       "type": "footer",
@@ -169,7 +169,7 @@
   "header_cat": true,
   "layout_mode": "showcase",
   "companion": {
-    "character": "orange_cat",
+    "character": "tuxedo_cat",
     "animation": "story",
     "duration": 24,
     "sequence": [
@@ -179,7 +179,7 @@
       "banner",
       "walk"
     ],
-    "banner": "Burncode_"
+    "banner": "I love you"
   },
   "widgets": {
     "languages": {
@@ -232,16 +232,18 @@
     ]
   },
   "device": {
-    "OS": "Arch Linux (example)",
+    "OS": "Arch Linux",
     "Host": "Developer Workstation",
-    "Editor": "Emacs / VS Code",
-    "Shell": "PowerShell / Bash",
+    "CPU": "Intel(R) Core(TM) i7-9700KF CPU @ 3.60GHz   3.60 GHz",
+    "GPU": "NVIDIA GeForce GTX 1660 Ti (6 GB)",
+    "Editor": "Emacs",
+    "Shell": "Bash",
     "logo": "arch",
-    "hostname": "workstation",
+    "hostname": "mharch",
     "command": "fastfetch --logo small",
-    "Device": "Desktop PC",
-    "RAM": "32 GB",
-    "Storage": "1 TB SSD",
+    "Device": "联想R7000",
+    "RAM": "128 GB",
+    "Storage": "6 TB SSD",
     "color_seed": "burncode",
     "logo_animate": true
   },

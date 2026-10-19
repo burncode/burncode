@@ -24,7 +24,8 @@
     "pixel_density": 2
   },
   "studio": {
-    "scene": "workshop"
+    "scene": "workshop",
+    "asset": "studio-day"
   },
   "components": {
     "projects": {

@@ -474,12 +474,16 @@ def render_sections(cfg,theme_name):
             for i,release in enumerate(cfg['_releases']):
                 sections.append((f'release-{i+1}',start+57+i*35,35,release.get('url') or None))
         else:sections.append((kind,start,h,None))
-        # Preserve the 8-unit section spacing as a separate transparent strip.
-        # GitHub does not reliably preserve CSS margins between embedded images.
-        sections.append((f'gap-{kind}',y+h,8,None))
-        y+=h+8
-    if sections and sections[-1][0].startswith('gap-'):
-        sections.pop()
+        # Merge the section gap into the final slice instead of producing
+        # an extra transparent <img>, which GitHub gives its own line box.
+        label, top, section_height, link = sections[-1]
+        sections[-1] = (label, top, section_height + 8, link)
+        y += h + 8
+
+    # No blank strip after the last visible section.
+    if sections:
+        label, top, section_height, link = sections[-1]
+        sections[-1] = (label, top, section_height - 8, link)
     height=max(1,y-8)
     original=svg_document(canvas,height,f'{cfg["profile"]["username"]} profile')
     inner=original[original.index('<svg '):]

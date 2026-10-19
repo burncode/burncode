@@ -24,7 +24,8 @@
     "pixel_density": 2
   },
   "studio": {
-    "scene": "sunset"
+    "scene": "sunset",
+    "asset": "studio-night"
   },
   "components": {
     "projects": {

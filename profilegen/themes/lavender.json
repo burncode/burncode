@@ -24,7 +24,8 @@
     "pixel_density": 2
   },
   "studio": {
-    "scene": "daylight"
+    "scene": "daylight",
+    "asset": "studio-day"
   },
   "components": {
     "projects": {

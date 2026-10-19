@@ -24,7 +24,8 @@
     "pixel_density": 2
   },
   "studio": {
-    "scene": "night_city"
+    "scene": "night_city",
+    "asset": "studio-night"
   },
   "components": {
     "projects": {
