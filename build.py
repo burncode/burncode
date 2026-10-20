@@ -481,17 +481,12 @@ def render_sections(cfg,theme_name):
             for i,release in enumerate(cfg['_releases']):
                 sections.append((f'release-{i+1}',start+57+i*35,35,release.get('url') or None))
         else:sections.append((kind,start,h,None))
-        # Merge the section gap into the final slice instead of producing
-        # an extra transparent <img>, which GitHub gives its own line box.
+        # Keep scene coordinates separated for safe clipping, but export only
+        # actual component content. GitHub already adds an inline-image line box.
         label, top, section_height, link = sections[-1]
         content_bounds[label]=(top,section_height)
-        sections[-1] = (label, top, section_height + 8, link)
         y += h + 8
 
-    # No blank strip after the last visible section.
-    if sections:
-        label, top, section_height, link = sections[-1]
-        sections[-1] = (label, top, section_height - 8, link)
     height=max(1,y-8)
     original=svg_document(canvas,height,f'{cfg["profile"]["username"]} profile')
     inner=original[original.index('<svg '):]
@@ -554,6 +549,9 @@ def make_readme(cfg):
             source=source.replace('width="100%"',f'width="{_social_width(cfg,name)}"')
             connect_markup.append(source)
         else:
+            # Native HTML alignment survives sanitization and avoids the inline
+            # image's descender gap without relying on custom README CSS.
+            source=source.replace('width="100%"','width="100%" align="top"')
             # Flush the social toolbar before ANY following section, including gaps.
             # Otherwise CSS/transparent spacer strips can make it appear anchored elsewhere.
             if connect_markup:
@@ -584,9 +582,9 @@ def make_preview_html(cfg):
             "<title>GitHub README · Width & Theme Preview</title><style>"
             "body{margin:0;padding:20px;background:#e8e9eb;color:#17191c;font:14px system-ui}"
             "section.panel{margin:0 auto 30px}h2{font-size:14px;font-weight:600;margin:0 0 12px}"
-            ".readme{background:#fff;padding:8px;overflow:hidden}"
-            ".readme>div{line-height:0}.readme img{max-width:100%;height:auto;border:0}"
-            ".readme>div img{display:block;width:100%}.readme p.social-toolbar{margin:5px 0 9px;line-height:40px;text-align:center}"
+            ".readme{background:#fff;padding:8px;overflow:hidden;font-size:16px;line-height:1.5}"
+            ".readme img{max-width:100%;height:auto;border:0}"
+            ".readme>div img{display:inline;width:100%}.readme p.social-toolbar{margin:5px 0 9px;line-height:40px;text-align:center}"
             ".readme p.social-toolbar img{display:inline-block;width:auto!important;max-width:none;vertical-align:middle}"
             ".readme a{cursor:pointer}.readme a:hover img{filter:brightness(.985)}"
             "@media(prefers-color-scheme:dark){body{background:#191b20;color:#eee}}"

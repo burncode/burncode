@@ -64,7 +64,7 @@
     "以无法为有法."
   ],
   "themes": {
-    "light": "paper",
+    "light": "mono",
     "dark": "violet",
     "generate": {
       "mono": "light",

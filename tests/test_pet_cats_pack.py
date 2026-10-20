@@ -38,8 +38,11 @@ class PetCatsPackTests(unittest.TestCase):
             self.skipTest('Pillow unavailable for source PNG comparison')
         import zipfile
         from io import BytesIO
+        source_archive=ROOT/'assets/pet-cats-pack.zip'
+        if not source_archive.is_file():
+            self.skipTest('Original source archive unavailable for optional PNG comparison')
         data=companion._pack()
-        with zipfile.ZipFile(ROOT/'assets/pet-cats-pack.zip') as archive:
+        with zipfile.ZipFile(source_archive) as archive:
             for cat in data['characters'].values():
                 for action in cat['actions'].values():
                     sheet=Image.open(BytesIO(archive.read(action['source']))).convert('RGBA')
