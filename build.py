@@ -578,7 +578,8 @@ def make_preview_html(cfg):
             # Single-image links and social images are also theme-pinned.
             content = re.sub(r'assets/sections/(?:'+re.escape(cfg['themes']['light'])+'|'+re.escape(cfg['themes']['dark'])+')/',
                              'assets/sections/'+theme+'/', content)
-            panels.append(f'<section class="panel" style="max-width:{width}px"><h2>{mode} · {html.escape(theme)} · {width}px</h2><div class="readme" style="background:{load_theme(theme)['colors']['background']}">{content}</div></section>')
+            background = load_theme(theme)['colors']['background']
+            panels.append(f'<section class="panel" style="max-width:{width}px"><h2>{mode} · {html.escape(theme)} · {width}px</h2><div class="readme" style="background:{background}">{content}</div></section>')
     return ("<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>"
             "<title>GitHub README · Width & Theme Preview</title><style>"
             "body{margin:0;padding:20px;background:#e8e9eb;color:#17191c;font:14px system-ui}"
