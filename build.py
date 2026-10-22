@@ -377,7 +377,8 @@ def validate(config, config_path):
     seen=set()
     for i,item in enumerate(layout):
         if not isinstance(item,dict) or item.get('type') not in (*COMPONENTS, 'social'):
-            raise ConfigError(f'layout[{i}].type must be one of {list(COMPONENTS)+['social']}')
+            allowed_types = list(COMPONENTS) + ['social']
+            raise ConfigError(f"layout[{i}].type must be one of {allowed_types}")
         if item['type'] in seen:raise ConfigError(f'layout has duplicate component {item["type"]}')
         seen.add(item['type'])
         if not isinstance(item.get('enabled',True),bool):raise ConfigError(f'layout[{i}].enabled must be boolean')
