@@ -1851,8 +1851,13 @@
       "date": "2026-11-27",
       "count": 0,
       "level": 0
+    },
+    {
+      "date": "2026-11-28",
+      "count": 0,
+      "level": 0
     }
   ],
-  "fetched_at": 1795781906.5086045,
+  "fetched_at": 1795866223.7679477,
   "source": "github-graphql"
 }
